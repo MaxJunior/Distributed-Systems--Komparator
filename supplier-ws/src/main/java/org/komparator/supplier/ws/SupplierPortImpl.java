@@ -10,6 +10,7 @@ import org.komparator.supplier.domain.Purchase;
 import org.komparator.supplier.domain.QuantityException;
 import org.komparator.supplier.domain.Supplier;
 
+// TODO
 @WebService(
 		endpointInterface = "org.komparator.supplier.ws.SupplierPortType", 
 		wsdlLocation = "supplier.1_0.wsdl", 
@@ -18,7 +19,7 @@ import org.komparator.supplier.domain.Supplier;
 		targetNamespace = "http://ws.supplier.komparator.org/", 
 		serviceName = "SupplierService"
 )
-public class SupplierPortImpl implements SupplierPortType {
+public class SupplierPortImpl { // implements SupplierPortType {
 
 	// end point manager
 	private SupplierEndpointManager endpointManager;
@@ -50,7 +51,6 @@ public class SupplierPortImpl implements SupplierPortType {
 	}
 
 	public List<ProductView> searchProducts(String descText) throws BadText_Exception {
-		System.out.println("LOL");
 		// Exceptions
 		if (descText == null)
 			throwBadText("Description text cannot be null!");
