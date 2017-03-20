@@ -28,7 +28,7 @@ public class SupplierPortImpl implements SupplierPortType {
 	}
 
 	// Main operations -------------------------------------------------------
-
+	@Override
 	public ProductView getProduct(String productId) throws BadProductId_Exception {
 		// check product id
 		if (productId == null)
@@ -48,7 +48,8 @@ public class SupplierPortImpl implements SupplierPortType {
 		// product not found
 		return null;
 	}
-
+	
+	@Override
 	public List<ProductView> searchProducts(String descText) throws BadText_Exception {
 		// Exceptions
 		if (descText == null)
@@ -70,7 +71,7 @@ public class SupplierPortImpl implements SupplierPortType {
 
 		return ret;
 	}
-
+	@Override
 	public String buyProduct(String productId, int quantity)
 			throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
 		// TODO
@@ -82,7 +83,7 @@ public class SupplierPortImpl implements SupplierPortType {
 	}
 
 	// Auxiliary operations --------------------------------------------------
-
+	@Override
 	public String ping(String name) {
 		if (name == null || name.trim().length() == 0)
 			name = "friend";
@@ -94,11 +95,12 @@ public class SupplierPortImpl implements SupplierPortType {
 		builder.append(" from ").append(wsName);
 		return builder.toString();
 	}
-
+	
+	@Override
 	public void clear() {
 		Supplier.getInstance().reset();
 	}
-
+	@Override
 	public void createProduct(ProductView productToCreate) throws BadProductId_Exception, BadProduct_Exception {
 		// check null
 		if (productToCreate == null)
@@ -127,7 +129,8 @@ public class SupplierPortImpl implements SupplierPortType {
 		Supplier s = Supplier.getInstance();
 		s.registerProduct(productId, productDesc, quantity, price);
 	}
-
+	
+	@Override
 	public List<ProductView> listProducts() {
 		Supplier supplier = Supplier.getInstance();
 		List<ProductView> pvs = new ArrayList<ProductView>();
@@ -138,7 +141,8 @@ public class SupplierPortImpl implements SupplierPortType {
 		}
 		return pvs;
 	}
-
+	
+	@Override
 	public List<PurchaseView> listPurchases() {
 		Supplier supplier = Supplier.getInstance();
 		List<PurchaseView> pvs = new ArrayList<PurchaseView>();
