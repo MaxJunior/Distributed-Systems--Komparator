@@ -74,12 +74,32 @@ public class SupplierPortImpl implements SupplierPortType {
 	@Override
 	public String buyProduct(String productId, int quantity)
 			throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
-		// TODO
 		
 		
+	if (productId == null || (productId.trim().length()== 0))
+		throwBadProductId("ProductId Description text cannot be null!");
+	  
+	if(quantity <= 0){
+		throwBadQuantity("Invalid quantity Description, the quantity of product to buy must be great than 0.");
+	}
+	
+	Supplier supplier = Supplier.getInstance();
+	Product product = supplier.getProduct(productId);
+    
+	if(product == null)
+		throwBadProductId("ProductId Description not found!");	
+	
+	String purchaseId="0";
+	try {
+		purchaseId = supplier.buyProduct(productId, quantity);
+		return purchaseId;
+	} catch (QuantityException e) {
 		
+	     throwBadQuantity("Invalid quantity Description, the quantity of product to buy must be great than avaliable product quantity.");
 		
-		return null;
+	}
+	
+	return null;
 	}
 
 	// Auxiliary operations --------------------------------------------------
