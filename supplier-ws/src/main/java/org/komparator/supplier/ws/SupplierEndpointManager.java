@@ -14,11 +14,10 @@ public class SupplierEndpointManager {
 	/** Port implementation */
 	private SupplierPortImpl portImpl = new SupplierPortImpl(this);
 
-// TODO
-//	/** Obtain Port implementation */
-//	public SupplierPortType getPort() {
-//		return portImpl;
-//	}
+	/** Obtain Port implementation */
+	public SupplierPortType getPort() {
+		return portImpl;
+	}
 
 	/** Web Service end point */
 	private Endpoint endpoint = null;
