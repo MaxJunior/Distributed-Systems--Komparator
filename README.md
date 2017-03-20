@@ -8,7 +8,9 @@ andretome91@gmail.com
 
 ... ... ...
 
-... ... ...
+Maxwell Junior
+79457
+maxwell989@gmail.com
 *(preencher com nome, número e email de membro do grupo e depois apagar esta linha)*
 
 
