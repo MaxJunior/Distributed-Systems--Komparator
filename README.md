@@ -6,12 +6,14 @@ André Tomé
 66938
 andretome91@gmail.com
 
-... ... ...
+Rodolfo Cardoso
+73861
+rodolfobragacardoso@hotmail.com
 
 Maxwell Junior
 79457
 maxwell989@gmail.com
-*(preencher com nome, número e email de membro do grupo e depois apagar esta linha)*
+
 
 
 -------------------------------------------------------------------------------
