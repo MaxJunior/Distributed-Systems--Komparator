@@ -80,7 +80,7 @@ public class SupplierPortImpl implements SupplierPortType {
 		throwBadProductId("ProductId Description text cannot be null!");
 	  
 	if(quantity <= 0){
-		throwBadQuantity("Invalid quantity Description, the quantity of product to buy must be great than 0.");
+		throwInsufficientQuantity("Invalid quantity Description, the quantity of product to buy must be great than 0.");
 	}
 	
 	Supplier supplier = Supplier.getInstance();
