@@ -113,7 +113,7 @@ public class BuyProductIT extends BaseIT {
 	
 	
 	@Test
-	public void searchProductExistsTest() throws BadText_Exception, BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
+	public void buyProductTest() throws BadText_Exception, BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
 		
 		int initialQuantity = client.getProduct("X1").getQuantity();
 		
