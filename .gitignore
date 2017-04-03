@@ -22,3 +22,6 @@ bin/
 
 # Maven
 target/
+
+# Others
+.recommenders/

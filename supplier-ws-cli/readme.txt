@@ -1,4 +1,4 @@
-C74
+A74
 ---
 
 This is a simple Java Web Service client
@@ -41,4 +41,4 @@ Check that the desired POM is selected and 'Finish'.
 
 
 ---
-C74
+A74

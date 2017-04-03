@@ -1,6 +1,6 @@
 # Projeto de Sistemas Distribuídos 2016-2017 #
 
-Grupo C74
+Grupo A74
 
 André Tomé
 66938
