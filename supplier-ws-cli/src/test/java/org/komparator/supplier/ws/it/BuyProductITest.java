@@ -15,7 +15,7 @@ import org.komparator.supplier.ws.*;
 /**
  * Test suite
  */
-public class BuyProductIT extends BaseIT {
+public class BuyProductITest extends BaseITest {
 
 	// static members
 
@@ -98,13 +98,21 @@ public class BuyProductIT extends BaseIT {
 		client.buyProduct("Z3333", 3);
 	}
 	
-	@Test(expected = InsufficientQuantity_Exception.class)
+	@Test(expected = BadQuantity_Exception.class)
 	public void buyProductNegativeQuantityTest() throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
-		client.buyProduct("Z3", 0);
+		client.buyProduct("Z3", -1);
 	}
 	@Test(expected = BadQuantity_Exception.class)
+	public void buyProductZeroQuantityTest() throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
+		client.buyProduct("Z3", 0);
+	}
+	@Test(expected = InsufficientQuantity_Exception.class)
 	public void buyProductTooMuchQuantityTest() throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
 		client.buyProduct("Z3", 100);
+	}
+	@Test(expected = InsufficientQuantity_Exception.class)
+	public void buyProductOneTooMany() throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
+		client.buyProduct("Z3", 31);
 	}
 	
 	

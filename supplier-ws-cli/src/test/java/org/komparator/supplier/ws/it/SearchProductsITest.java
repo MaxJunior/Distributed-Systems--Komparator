@@ -16,7 +16,7 @@ import org.komparator.supplier.ws.*;
 /**
  * Test suite
  */
-public class SearchProductsIT extends BaseIT {
+public class SearchProductsITest extends BaseITest {
 
 	// static members
 

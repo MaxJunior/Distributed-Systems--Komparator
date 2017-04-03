@@ -81,7 +81,7 @@ public class SupplierPortImpl implements SupplierPortType {
 			throwBadProductId("ProductId Description text cannot be null!");
 		  
 		if(quantity <= 0){
-			throwInsufficientQuantity("Invalid quantity Description, the quantity of product to buy must be great than 0.");
+			throwBadQuantity("Invalid quantity. The quantity of the product to buy must be great than 0.");
 		}
 		
 		Supplier supplier = Supplier.getInstance();
@@ -95,8 +95,7 @@ public class SupplierPortImpl implements SupplierPortType {
 			purchaseId = supplier.buyProduct(productId, quantity);
 			return purchaseId;
 		} catch (QuantityException e) {
-			
-		     throwBadQuantity("Invalid quantity Description, the quantity of product to buy must be great than avaliable product quantity.");
+		     throwInsufficientQuantity("Insufficient quantity, the quantity of product to buy must be lower than avaliable quantity.");
 			
 		}
 		
