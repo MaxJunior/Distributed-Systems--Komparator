@@ -16,7 +16,7 @@ import org.komparator.supplier.ws.*;
 /**
  * Test suite
  */
-public class SearchProductsITest extends BaseITest {
+public class SearchProductsIT extends BaseIT {
 
 	// static members
 
@@ -109,7 +109,7 @@ public class SearchProductsITest extends BaseITest {
 	@Test
 	public void searchProductExistsTest() throws BadText_Exception {
 		// when description contains text, non empty list should be returned
-		List<ProductView> products = client.searchProducts("soccer");
+		List<ProductView> products = client.searchProducts("Soccer");
 		assertEquals(products.isEmpty(), false);
 		assertEquals(products.size(), 1);
 

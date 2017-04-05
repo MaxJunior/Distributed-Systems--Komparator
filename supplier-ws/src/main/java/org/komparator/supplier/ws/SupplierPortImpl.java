@@ -62,9 +62,9 @@ public class SupplierPortImpl implements SupplierPortType {
 		ArrayList<ProductView> ret = new ArrayList<ProductView>();
 		Supplier supplier = Supplier.getInstance();
 		for (String productID : supplier.getProductsIDs()) {
-			Product p = supplier.getProduct(productID);
-			if (p != null && p.getDescription().toLowerCase().contains(descText.toLowerCase())) {
-				ProductView pv = newProductView(p);
+			Product product = supplier.getProduct(productID);
+			if (product != null && product.getDescription().contains(descText)) {
+				ProductView pv = newProductView(product);
 				ret.add(pv);
 			}
 		}

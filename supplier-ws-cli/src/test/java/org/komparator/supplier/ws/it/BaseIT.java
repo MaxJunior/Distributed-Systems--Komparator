@@ -7,7 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.komparator.supplier.ws.cli.SupplierClient;
 
-public class BaseITest {
+public class BaseIT {
 
 	private static final String TEST_PROP_FILE = "/test.properties";
 	protected static Properties testProps;
@@ -18,7 +18,7 @@ public class BaseITest {
 	public static void oneTimeSetup() throws Exception {
 		testProps = new Properties();
 		try {
-			testProps.load(BaseITest.class.getResourceAsStream(TEST_PROP_FILE));
+			testProps.load(BaseIT.class.getResourceAsStream(TEST_PROP_FILE));
 			System.out.println("Loaded test properties:");
 			System.out.println(testProps);
 		} catch (IOException e) {

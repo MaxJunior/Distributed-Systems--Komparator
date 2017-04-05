@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Test suite
  */
-public class PingITest extends BaseITest {
+public class PingIT extends BaseIT {
 
 	// tests
 	// assertEquals(expected, actual);
