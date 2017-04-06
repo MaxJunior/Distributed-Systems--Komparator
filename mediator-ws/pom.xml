@@ -37,6 +37,12 @@
             <artifactId>uddi-naming</artifactId>
             <version>1.2</version>
         </dependency>
+        <!-- Supplier-ws-cli  -->
+        <dependency>
+       		 <groupId>org.komparator.A74</groupId>
+       		 <artifactId>supplier-ws-cli</artifactId>
+       		 <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

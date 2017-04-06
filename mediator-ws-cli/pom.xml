@@ -17,8 +17,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <wsdl.directory>${basedir}/../mediator-ws/src/main/resources</wsdl.directory>
-        <wsdl.filename>mediator.wsdl</wsdl.filename>
+      <wsdl.directory>${basedir}/../mediator-ws/src/main/resources</wsdl.directory>
+        <wsdl.filename>mediator.1_0.wsdl</wsdl.filename> 
+        
+    <!--    <ws.url>http://localhost:8080/mediator-ws/endpoint</ws.url> -->
+    <!--    <wsdl.url>${ws.url}?WSDL</wsdl.url> -->
 
         <mainclass>org.komparator.mediator.ws.cli.MediatorClientApp</mainclass>
 
@@ -78,7 +81,10 @@
                     <wsdlDirectory>${wsdl.directory}</wsdlDirectory>
                     <wsdlFiles>
                         <wsdlFile>${wsdl.filename}</wsdlFile>
-                    </wsdlFiles>
+                    </wsdlFiles>   
+                <!--       <wsdlUrls>
+                        <wsdlUrl>${wsdl.url}</wsdlUrl>
+                    </wsdlUrls>  -->
                 </configuration>
                 <dependencies>
                     <dependency>
