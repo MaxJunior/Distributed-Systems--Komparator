@@ -159,5 +159,10 @@ public class MediatorEndpointManager {
 			}
 		}
 	}
+	
+	public String getUddiURL(){
+		return this.uddiURL;
+	}
+	
 
 }

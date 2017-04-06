@@ -16,8 +16,10 @@ public class SupplierApp {
 		}
 		
 		String uddiURL = args[0];
-		String name = args[1];
-		String wsURL = args[2];
+		String name = args[1]; 
+		
+		//TODO
+		String wsURL = args[2];  // change SupplierEndPointManager to receive just uddiURL and wsURL
 		
 
 		// Create server implementation object

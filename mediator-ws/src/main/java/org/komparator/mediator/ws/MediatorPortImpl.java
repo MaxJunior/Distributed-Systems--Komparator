@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import org.komparator.supplier.ws.cli.SupplierClient;
+import org.komparator.supplier.ws.cli.SupplierClientException;
 
 @WebService(
 		endpointInterface = "org.komparator.mediator.ws.MediatorPortType", 
@@ -37,7 +38,25 @@ public class MediatorPortImpl implements MediatorPortType{
 	@Override
 	public String ping(String arg0) {
 	//	SupplierClient cli =  new SupplierClient(arg0);
-		return arg0;
+		
+		System.out.println("BEFORE PING " );
+		SupplierClient client;
+		try {
+			client = new SupplierClient(endpointManager.getUddiURL(),"A74_Supplier1");
+		} catch (SupplierClientException e) {
+			client=null;
+			System.out.println("ERROR : FAIL CREATING SUPPLIER CLIENT");
+		}
+		String result = client.ping(arg0);
+		System.out.println("AFTER PING " );
+		if(result == null){
+			return "Error in ping method";
+		}
+		
+		System.out.println("RETURNED VALUE :  " + result);
+		
+		return   result;
+		
 	}
 
 

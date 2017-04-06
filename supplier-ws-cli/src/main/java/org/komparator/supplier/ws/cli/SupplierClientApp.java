@@ -5,16 +5,19 @@ public class SupplierClientApp {
 
 	public static void main(String[] args) throws Exception {
 		// Check arguments
-		if (args.length < 1) {
+		if (args.length < 2) {
 			System.err.println("Argument(s) missing!");
 			System.err.println("Usage: java " + SupplierClientApp.class.getName() + " wsURL");
 			return;
 		}
-		String wsURL = args[0];
+		
+		String uddiURL = args[0];
+		String name = args[1] + "1"; // TO BE CHANGED : THE INCREMENT
+		
 
 		// Create client
-		System.out.printf("Creating client for server at %s%n", wsURL);
-		SupplierClient client = new SupplierClient(wsURL);
+		System.out.printf("Creating client for server at %s and %s%n", uddiURL,name);
+		SupplierClient client = new SupplierClient(uddiURL,name);
 
 		// the following remote invocations are just basic examples
 		// the actual tests are made using JUnit
