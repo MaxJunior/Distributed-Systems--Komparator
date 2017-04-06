@@ -2,12 +2,15 @@ package org.komparator.mediator.ws;
 
 
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.jws.WebService;
 
 import org.komparator.supplier.ws.cli.SupplierClient;
 import org.komparator.supplier.ws.cli.SupplierClientException;
+
+import pt.ulisboa.tecnico.sdis.ws.uddi.UDDINamingException;
 
 @WebService(
 		endpointInterface = "org.komparator.mediator.ws.MediatorPortType", 
@@ -22,6 +25,7 @@ public class MediatorPortImpl implements MediatorPortType{
 
 	// end point manager
 	private MediatorEndpointManager endpointManager;
+	private final String SUPPLIER_SERVER_NAME = "A74_Supplier";
 
 	public MediatorPortImpl(MediatorEndpointManager endpointManager) {
 		this.endpointManager = endpointManager;
@@ -41,18 +45,35 @@ public class MediatorPortImpl implements MediatorPortType{
 		
 		System.out.println("BEFORE PING " );
 		SupplierClient client;
-		try {
-			client = new SupplierClient(endpointManager.getUddiURL(),"A74_Supplier1");
-		} catch (SupplierClientException e) {
-			client=null;
-			System.out.println("ERROR : FAIL CREATING SUPPLIER CLIENT");
-		}
-		String result = client.ping(arg0);
-		System.out.println("AFTER PING " );
-		if(result == null){
-			return "Error in ping method";
-		}
+		Collection<String> listOfURL = null ;
 		
+		try {
+		     listOfURL =endpointManager.getUddiNaming().list(SUPPLIER_SERVER_NAME+"%");
+		} catch (UDDINamingException e1) {
+			System.out.println("Error : UDDI_NAMING IS INVALID OR INEXISTENT");
+		}
+
+     //   System.out.println("List of URL :  " + listOfURL.toString());
+        
+        int numbOfSuppliers = listOfURL.size();
+        String result= "[ ";
+		for(int urlId = 1 ; urlId <= numbOfSuppliers; urlId++  ) {
+			try {
+				client = new SupplierClient(endpointManager.getUddiURL(),SUPPLIER_SERVER_NAME + urlId);
+			} catch (SupplierClientException e) {
+				client=null;
+				System.out.println("ERROR : FAIL CREATING SUPPLIER CLIENT");
+			}
+			String currentResult = client.ping(arg0);      //TODO TREAT THE CASE WHEN CLIENT IS NULL
+			System.out.println("AFTER PING " );
+			if(currentResult == null){
+				return "Error in ping method";
+			}
+			
+			result +=" " + SUPPLIER_SERVER_NAME + urlId +" ping result: " + currentResult +" ; ";
+		
+		}
+		result += " ]";
 		System.out.println("RETURNED VALUE :  " + result);
 		
 		return   result;
