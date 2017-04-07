@@ -11,11 +11,15 @@ import java.util.List;
 import javax.jws.WebService;
 
 import org.komparator.supplier.ws.BadProductId_Exception;
+import org.komparator.supplier.ws.BadQuantity_Exception;
 import org.komparator.supplier.ws.BadText_Exception;
+import org.komparator.supplier.ws.InsufficientQuantity_Exception;
 import org.komparator.supplier.ws.ProductView;
 import org.komparator.supplier.ws.cli.SupplierClient;
 import org.komparator.supplier.ws.cli.SupplierClientException;
 
+import pt.ulisboa.tecnico.sdis.ws.cli.CreditCardClient;
+import pt.ulisboa.tecnico.sdis.ws.cli.CreditCardClientException;
 import pt.ulisboa.tecnico.sdis.ws.uddi.UDDINamingException;
 
 @WebService(
@@ -279,8 +283,79 @@ public class MediatorPortImpl implements MediatorPortType{
 	@Override
 	public ShoppingResultView buyCart(String cartId, String creditCardNr)
 			throws EmptyCart_Exception, InvalidCartId_Exception, InvalidCreditCard_Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		CartView cartV=null;
+		boolean cartExists = false;
+		CreditCardClient creditCardCli=null;
+		ShoppingResultView shoppingRV = new ShoppingResultView();
+		shoppingRV.setId("id1");
+		shoppingRV.setResult(Result.COMPLETE);
+		
+		try {
+			creditCardCli = new CreditCardClient("http://ws.sd.rnl.tecnico.ulisboa.pt:8080/cc");
+		} catch (CreditCardClientException e) {
+			InvalidCreditCard inv = new InvalidCreditCard();
+			throw new InvalidCreditCard_Exception("invalid card in buyCart", inv);
+		}
+		if(creditCardCli.validateNumber(creditCardNr)){
+			System.out.println("Credit card is valid");
+		}else{
+			InvalidCreditCard inv = new InvalidCreditCard();
+			throw new InvalidCreditCard_Exception("invalid card id in buyCart", inv);
+		}
+		
+		
+		
+		for(CartView cartView : listCartView){      /// Verificar se carrinho nao existe
+			if(cartView.getCartId().equals(cartId)){
+				cartV=cartView;
+				cartExists=true;
+			}
+		}
+		if(cartExists){
+			
+			for(CartItemView itemV : cartV.getItems()){
+				
+				SupplierClient client;
+				int numbOfSuppliers = getNumberOfCurrentSuppliers();
+		   
+				for(int urlId = 1 ; urlId <= numbOfSuppliers; urlId++  ) {
+					try {
+						client = new SupplierClient(endpointManager.getUddiURL(),SUPPLIER_SERVER_NAME + urlId);
+						 try {
+							client.buyProduct(itemV.getItem().getItemId().productId, itemV.getQuantity());
+							shoppingRV.getPurchasedItems().add(itemV);
+							shoppingRV.setTotalPrice(itemV.getQuantity()*itemV.getItem().getPrice());
+						} catch (BadProductId_Exception | BadQuantity_Exception | InsufficientQuantity_Exception e) {
+							shoppingRV.setResult(Result.PARTIAL);
+							shoppingRV.getDroppedItems().add(itemV);
+						} 
+					} catch (SupplierClientException e) {
+						client=null;
+						System.out.println("ERROR : FAIL TO CLEAR SUPPLIER CLIENT");
+					}     
+				}
+				
+				if(shoppingRV.getPurchasedItems().isEmpty()){
+					shoppingRV.setResult(Result.EMPTY);
+				}else{
+					//creditCardCli.buy(shoppingRV.getTotalPrice());
+				}
+				
+				
+				
+			}
+			
+			
+			
+		}else{
+			InvalidCartId inv = new InvalidCartId();
+			throw new InvalidCartId_Exception("invalid cart in buyCart", inv);
+		}
+		
+		
+		
+		return shoppingRV;
 	}
 
 

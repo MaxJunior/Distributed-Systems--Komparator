@@ -43,6 +43,12 @@
        		 <artifactId>supplier-ws-cli</artifactId>
        		 <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- cc-ws-cli  -->
+        <dependency>
+       		 <groupId>org.komparator.A74</groupId>
+		     <artifactId>cc-ws-cli</artifactId>
+		     <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
