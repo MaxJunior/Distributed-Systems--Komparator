@@ -31,6 +31,20 @@ public class MediatorPortImpl implements MediatorPortType{
 		this.endpointManager = endpointManager;
 	}
 
+	
+	public int  getNumberOfCurrentSuppliers(){
+		Collection<String> listOfURL = null ;
+		try {
+		     listOfURL =endpointManager.getUddiNaming().list(SUPPLIER_SERVER_NAME+"%");
+		} catch (UDDINamingException e1) {
+			System.out.println("Error : UDDI_NAMING IS INVALID OR INEXISTENT");
+		}
+
+    //   System.out.println("List of URL :  " + listOfURL.toString());
+       
+       int numbOfSuppliers = listOfURL.size();
+		return numbOfSuppliers ;
+	}
     
 	// Main operations -------------------------------------------------------
 
@@ -39,38 +53,34 @@ public class MediatorPortImpl implements MediatorPortType{
     
 	// Auxiliary operations --------------------------------------------------	
 	
+	
+	
 	@Override
 	public String ping(String arg0) {
 	//	SupplierClient cli =  new SupplierClient(arg0);
 		
 		System.out.println("BEFORE PING " );
 		SupplierClient client;
-		Collection<String> listOfURL = null ;
 		
-		try {
-		     listOfURL =endpointManager.getUddiNaming().list(SUPPLIER_SERVER_NAME+"%");
-		} catch (UDDINamingException e1) {
-			System.out.println("Error : UDDI_NAMING IS INVALID OR INEXISTENT");
-		}
-
-     //   System.out.println("List of URL :  " + listOfURL.toString());
-        
-        int numbOfSuppliers = listOfURL.size();
+		
+	   
+	    int numbOfSuppliers = getNumberOfCurrentSuppliers();
         String result= "[ ";
 		for(int urlId = 1 ; urlId <= numbOfSuppliers; urlId++  ) {
 			try {
 				client = new SupplierClient(endpointManager.getUddiURL(),SUPPLIER_SERVER_NAME + urlId);
+				String currentResult = client.ping(arg0);      
+				System.out.println("AFTER PING " );
+				if(currentResult == null){
+					return "Error in ping method";
+				}
+				
+				result +=" " + SUPPLIER_SERVER_NAME + urlId +" ping result: " + currentResult +" ; ";
 			} catch (SupplierClientException e) {
 				client=null;
 				System.out.println("ERROR : FAIL CREATING SUPPLIER CLIENT");
 			}
-			String currentResult = client.ping(arg0);      //TODO TREAT THE CASE WHEN CLIENT IS NULL
-			System.out.println("AFTER PING " );
-			if(currentResult == null){
-				return "Error in ping method";
-			}
 			
-			result +=" " + SUPPLIER_SERVER_NAME + urlId +" ping result: " + currentResult +" ; ";
 		
 		}
 		result += " ]";
@@ -83,7 +93,18 @@ public class MediatorPortImpl implements MediatorPortType{
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		SupplierClient client;
+		int numbOfSuppliers = getNumberOfCurrentSuppliers();
+   
+		for(int urlId = 1 ; urlId <= numbOfSuppliers; urlId++  ) {
+			try {
+				client = new SupplierClient(endpointManager.getUddiURL(),SUPPLIER_SERVER_NAME + urlId);
+				 client.clear(); 
+			} catch (SupplierClientException e) {
+				client=null;
+				System.out.println("ERROR : FAIL TO CLEAR SUPPLIER CLIENT");
+			}     
+		}
 		
 	}
 
