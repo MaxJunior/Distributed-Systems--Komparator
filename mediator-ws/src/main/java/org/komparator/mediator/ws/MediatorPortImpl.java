@@ -32,6 +32,7 @@ public class MediatorPortImpl implements MediatorPortType{
 	// end point manager
 	private MediatorEndpointManager endpointManager;
 	private final String SUPPLIER_SERVER_NAME = "A74_Supplier";
+	private List<CartView> listCartView = new ArrayList<CartView>();
 
 	public MediatorPortImpl(MediatorEndpointManager endpointManager) {
 		this.endpointManager = endpointManager;
@@ -111,6 +112,8 @@ public class MediatorPortImpl implements MediatorPortType{
 				System.out.println("ERROR : FAIL TO CLEAR SUPPLIER CLIENT");
 			}     
 		}
+		
+		listCartView.clear();
 		
 	}
 
@@ -220,11 +223,6 @@ public class MediatorPortImpl implements MediatorPortType{
 		}
 	}
 
-	@Override
-	public List<CartView> listCarts() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	 public List<ItemView> transformListProdViewToListItemView(List<ProductView> listProd, String supplierId){
 	    	
@@ -273,7 +271,11 @@ public class MediatorPortImpl implements MediatorPortType{
 		return items;
 	}
 
-
+	@Override
+	public List<CartView> listCarts() {
+		return listCartView;
+	}
+	
 	@Override
 	public ShoppingResultView buyCart(String cartId, String creditCardNr)
 			throws EmptyCart_Exception, InvalidCartId_Exception, InvalidCreditCard_Exception {
@@ -285,7 +287,86 @@ public class MediatorPortImpl implements MediatorPortType{
 	@Override
 	public void addToCart(String cartId, ItemIdView itemId, int itemQty) throws InvalidCartId_Exception,
 			InvalidItemId_Exception, InvalidQuantity_Exception, NotEnoughItems_Exception {
-		// TODO Auto-generated method stub
+		
+		if(cartId == null || cartId.trim().equals("")){
+			InvalidCartId faultInfo = new InvalidCartId();
+			throw new InvalidCartId_Exception("invalid addToCart", faultInfo);
+		}
+		if(itemQty <= 0){
+			InvalidQuantity faultInfo = new InvalidQuantity();
+			throw new InvalidQuantity_Exception("invalid addToCart", faultInfo);
+		}
+		if(itemId == null){
+			InvalidItemId faultInfo = new InvalidItemId();
+			throw new InvalidItemId_Exception("invalid addToCart", faultInfo);
+		}
+		
+		
+		boolean ItemExistsInCart = false;
+		CartItemView cartItemView;
+		
+		boolean cartExists=false;
+		
+		for(CartView cartView : listCartView){      /// Verificar se carrinho nao existe
+			if(cartView.getCartId().equals(cartId)){
+				cartExists=true;
+			}
+		}
+		if(!cartExists){     ////criar novo carrinho:
+			CartView newCart = new CartView();
+			newCart.setCartId(cartId);
+			listCartView.add(newCart);
+		}
+		
+		
+		for(CartView cartView : listCartView){       //procura carrinho existente
+			if(cartView.getCartId().equals(cartId)){
+				
+				/*CartItemView cartItemToFindInCart = new CartItemView();
+				ItemView itemToFindInCart = new ItemView();
+				itemToFindInCart.setDesc(value);
+				cartItemToFindInCart.setItem(itemToFindInCart);*/
+				
+				for(CartItemView cartItemViewInCart : cartView.getItems()) { //procura se item ja existe no carrinho
+					if(cartItemViewInCart.getItem().getItemId().getProductId().equals(itemId.getProductId())            /////encontra se item existe 
+							&&  cartItemViewInCart.getItem().getItemId().getSupplierId().equals(itemId.getSupplierId())){
+						
+						ItemExistsInCart = true;
+						/*if(supplierItemQuantity < (cartItemViewInCart.getQuantity() + itemQty)){
+							NotEnoughItems faultInfo = new NotEnoughItems();
+							throw new NotEnoughItems_Exception("not enough items", null);
+						}*/
+						cartItemViewInCart.setQuantity(cartItemViewInCart.getQuantity() + itemQty);    ////aumenta a quantidade
+						
+						
+					}
+					
+				}
+				
+				if(!ItemExistsInCart){                       ////caso o item nao exista no carrinho criar novo cartItemView:
+					
+					cartItemView = new CartItemView();
+					
+					ItemView newItem = new ItemView();
+					
+					List<ItemView> listItemView = new ArrayList<ItemView>();
+					listItemView = getItems(itemId.getProductId());
+					
+					for(ItemView item : listItemView){       /////  procurar na lista de items de todos os fornecedores o item do fornecedor pedido (para ver o preco por exemplo)
+						if(item.getItemId().getSupplierId().equals(itemId.getSupplierId())){
+							newItem.setDesc(item.getDesc());
+							newItem.setItemId(item.getItemId());
+							newItem.setPrice(item.getPrice());
+						}
+					}
+					
+					cartItemView.setItem(newItem);
+					cartItemView.setQuantity(itemQty);
+					cartView.getItems().add(cartItemView);
+				
+				}
+			}
+		} 
 		
 	}
 
