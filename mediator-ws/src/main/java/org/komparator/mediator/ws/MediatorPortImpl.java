@@ -304,6 +304,16 @@ public class MediatorPortImpl implements MediatorPortType{
 			throw new InvalidCreditCard_Exception("invalid card id in buyCart", inv);
 		}
 		
+		if(cartId == null){
+			InvalidCartId inv = new InvalidCartId();
+			throw new InvalidCartId_Exception("invalid cart in buyCart", inv);
+		}
+		
+		if(cartId.trim().equals("")){
+			InvalidCartId inv = new InvalidCartId();
+			throw new InvalidCartId_Exception("invalid cart in buyCart", inv);
+		}
+		
 		
 		
 		for(CartView cartView : listCartView){      /// Verificar se carrinho nao existe
@@ -322,14 +332,16 @@ public class MediatorPortImpl implements MediatorPortType{
 				for(int urlId = 1 ; urlId <= numbOfSuppliers; urlId++  ) {
 					try {
 						client = new SupplierClient(endpointManager.getUddiURL(),SUPPLIER_SERVER_NAME + urlId);
-						 try {
-							client.buyProduct(itemV.getItem().getItemId().productId, itemV.getQuantity());
-							shoppingRV.getPurchasedItems().add(itemV);
-							shoppingRV.setTotalPrice(itemV.getQuantity()*itemV.getItem().getPrice());
-						} catch (BadProductId_Exception | BadQuantity_Exception | InsufficientQuantity_Exception e) {
-							shoppingRV.setResult(Result.PARTIAL);
-							shoppingRV.getDroppedItems().add(itemV);
-						} 
+						if((SUPPLIER_SERVER_NAME + urlId).equals(itemV.getItem().itemId.supplierId)){
+							 try {
+								client.buyProduct(itemV.getItem().getItemId().productId, itemV.getQuantity());
+								shoppingRV.getPurchasedItems().add(itemV);
+								shoppingRV.setTotalPrice(itemV.getQuantity()*itemV.getItem().getPrice() + shoppingRV.getTotalPrice());
+							} catch (BadProductId_Exception | BadQuantity_Exception | InsufficientQuantity_Exception e) {
+								shoppingRV.setResult(Result.PARTIAL);
+								shoppingRV.getDroppedItems().add(itemV);
+							} 
+						}
 					} catch (SupplierClientException e) {
 						client=null;
 						System.out.println("ERROR : FAIL TO CLEAR SUPPLIER CLIENT");
@@ -377,6 +389,24 @@ public class MediatorPortImpl implements MediatorPortType{
 		}
 		
 		
+		
+		//comunicacao com supplier
+		SupplierClient client;
+		try {
+			client = new SupplierClient(endpointManager.getUddiURL(), itemId.getSupplierId() );
+
+			
+		} catch (SupplierClientException e) {
+			client=null;
+			System.out.println("ERROR : FAIL SUPPLIER CLIENT");
+			
+		}
+		
+		
+		
+		
+	
+		
 		boolean ItemExistsInCart = false;
 		CartItemView cartItemView;
 		
@@ -406,11 +436,30 @@ public class MediatorPortImpl implements MediatorPortType{
 					if(cartItemViewInCart.getItem().getItemId().getProductId().equals(itemId.getProductId())            /////encontra se item existe 
 							&&  cartItemViewInCart.getItem().getItemId().getSupplierId().equals(itemId.getSupplierId())){
 						
+						
+						
+						// verificar quantidade maxima excedida
+						int productQuantityInSupplier=0;
+						try {
+							productQuantityInSupplier = client.getProduct(itemId.getProductId()).getQuantity();
+						} catch (BadProductId_Exception e) {
+							InvalidItemId faultInfo = new InvalidItemId();
+							throw new InvalidItemId_Exception("invalid addToCart", faultInfo);
+						}
+						
+						if((itemQty + cartItemViewInCart.getQuantity()) > productQuantityInSupplier){
+							throw new NotEnoughItems_Exception("not enoughItems", null);
+						}
+						
+						
+						
+						
 						ItemExistsInCart = true;
 						/*if(supplierItemQuantity < (cartItemViewInCart.getQuantity() + itemQty)){
 							NotEnoughItems faultInfo = new NotEnoughItems();
 							throw new NotEnoughItems_Exception("not enough items", null);
 						}*/
+						
 						cartItemViewInCart.setQuantity(cartItemViewInCart.getQuantity() + itemQty);    ////aumenta a quantidade
 						
 						
@@ -429,9 +478,26 @@ public class MediatorPortImpl implements MediatorPortType{
 					
 					for(ItemView item : listItemView){       /////  procurar na lista de items de todos os fornecedores o item do fornecedor pedido (para ver o preco por exemplo)
 						if(item.getItemId().getSupplierId().equals(itemId.getSupplierId())){
+							
+							// verificar quantidade maxima excedida
+							int productQuantityInSupplier=0;
+							try {
+								productQuantityInSupplier = client.getProduct(itemId.getProductId()).getQuantity();
+							} catch (BadProductId_Exception e) {
+								InvalidItemId faultInfo = new InvalidItemId();
+								throw new InvalidItemId_Exception("invalid addToCart", faultInfo);
+							}
+							
+							if((itemQty) > productQuantityInSupplier){
+								throw new NotEnoughItems_Exception("not enoughItems", null);
+							}
+							
+							
 							newItem.setDesc(item.getDesc());
 							newItem.setItemId(item.getItemId());
 							newItem.setPrice(item.getPrice());
+							
+							
 						}
 					}
 					

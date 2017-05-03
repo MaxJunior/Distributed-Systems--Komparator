@@ -11,7 +11,7 @@ public class ClearIT  extends BaseIT{
 
     // public String ping(String x)
 
-    @Test
+   @Test
     public void pingEmptyTest() {
         mediatorClient.clear();
     }

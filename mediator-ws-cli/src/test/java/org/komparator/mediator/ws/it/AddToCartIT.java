@@ -162,6 +162,16 @@ public class AddToCartIT extends BaseIT{
 		mediatorClient.addToCart(cart.getCartId(), idViewTest, 0);
 	}
 	
+	@Test(expected = NotEnoughItems_Exception.class)
+	public void testExceedindQuantity1() throws InvalidCartId_Exception, InvalidItemId_Exception, InvalidQuantity_Exception, NotEnoughItems_Exception {
+		mediatorClient.addToCart(cart.getCartId(), idViewTest, 11);
+	}
+	
+	@Test(expected = NotEnoughItems_Exception.class)
+	public void testExceedindQuantity2() throws InvalidCartId_Exception, InvalidItemId_Exception, InvalidQuantity_Exception, NotEnoughItems_Exception {
+		mediatorClient.addToCart(cart.getCartId(), idViewTest, 10);
+		mediatorClient.addToCart(cart.getCartId(), idViewTest, 1);
+	}
 	
     @Test
     public void sucessNewCartFirstNewItem(){

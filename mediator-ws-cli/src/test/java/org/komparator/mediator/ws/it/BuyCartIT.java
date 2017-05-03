@@ -1,6 +1,7 @@
 package org.komparator.mediator.ws.it;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -14,7 +15,10 @@ import org.komparator.mediator.ws.CartView;
 import org.komparator.mediator.ws.EmptyCart_Exception;
 import org.komparator.mediator.ws.InvalidCartId_Exception;
 import org.komparator.mediator.ws.InvalidCreditCard_Exception;
+import org.komparator.mediator.ws.InvalidItemId_Exception;
+import org.komparator.mediator.ws.InvalidQuantity_Exception;
 import org.komparator.mediator.ws.ItemIdView;
+import org.komparator.mediator.ws.NotEnoughItems_Exception;
 import org.komparator.mediator.ws.Result;
 import org.komparator.mediator.ws.ShoppingResultView;
 import org.komparator.supplier.ws.BadProductId_Exception;
@@ -141,6 +145,21 @@ public class BuyCartIT extends BaseIT{
 	}
 	
 	
+	
+	@Test(expected = InvalidCartId_Exception.class)
+	public void testNullCart() throws EmptyCart_Exception, InvalidCartId_Exception, InvalidCreditCard_Exception {
+		mediatorClient.buyCart(null, "4556648855991861");
+	}
+	@Test(expected = InvalidCartId_Exception.class)
+	public void testEmptyCartId() throws EmptyCart_Exception, InvalidCartId_Exception, InvalidCreditCard_Exception {
+		mediatorClient.buyCart("", "4556648855991861");
+	}
+	@Test(expected = InvalidCartId_Exception.class)
+	public void testInexistingCart() throws EmptyCart_Exception, InvalidCartId_Exception, InvalidCreditCard_Exception {
+		mediatorClient.buyCart("xyz", "4556648855991861");
+	}
+	
+	
     
     @Test
     public void sucessBuyExistingCart(){
@@ -175,23 +194,58 @@ public class BuyCartIT extends BaseIT{
 			fail();
 			e.printStackTrace();
 		}
-    	//assertEquals(Result.COMPLETE,shoppingResult.getResult());
-    	//assertEquals(2,shoppingResult.getPurchasedItems().size());
-    	//assertEquals(0,shoppingResult.getDroppedItems().size());
-    	//assertEquals(20060,shoppingResult.getTotalPrice());
-    	/*
-    	cartList=mediatorClient.listCarts();
+    	assertEquals(Result.COMPLETE,shoppingResult.getResult());
+    	assertEquals(2,shoppingResult.getPurchasedItems().size());
+    	assertEquals(0,shoppingResult.getDroppedItems().size());
+    	assertEquals(20060,shoppingResult.getTotalPrice());
     	
-    	assertEquals(2, cartList.get(0).getItems().get(0).getQuantity());
-    	assertEquals("X1", cartList.get(0).getItems().get(0).getItem().getItemId().getProductId());
-    	assertEquals("A74_Supplier1", cartList.get(0).getItems().get(0).getItem().getItemId().getSupplierId());
-    	
-    	assertEquals(3, cartList.get(0).getItems().get(1).getQuantity());
-    	assertEquals("Y3", cartList.get(0).getItems().get(1).getItem().getItemId().getProductId());
-    	assertEquals("A74_Supplier2", cartList.get(0).getItems().get(1).getItem().getItemId().getSupplierId());
-    	
-    	*/
     }
+    
+    
+    
+    @Test
+    public void sucessBuyPartial() throws InvalidCartId_Exception, InvalidItemId_Exception, InvalidQuantity_Exception, NotEnoughItems_Exception, EmptyCart_Exception, InvalidCreditCard_Exception{
+    	
+    	
+    	{
+			ItemIdView id = new ItemIdView();
+			id.setProductId("X1");
+			id.setSupplierId("A74_Supplier1");
+			mediatorClient.addToCart("xyz", id, 2);
+			mediatorClient.addToCart("otherXyz", id, 2); // Purchased
+		}
+
+		{
+			ItemIdView id = new ItemIdView();
+			id.setProductId("Y2");
+			id.setSupplierId("A74_Supplier1");
+			mediatorClient.addToCart("xyz", id, 15);
+			mediatorClient.addToCart("otherXyz", id, 7); // Dropped
+		}
+
+		// -- buy carts
+		ShoppingResultView[] shpResViews = new ShoppingResultView[2];
+		shpResViews[0] = mediatorClient.buyCart("xyz", "4556648855991861");
+		shpResViews[1] = mediatorClient.buyCart("otherXyz", "4556648855991861");
+
+		// verify id and result of first buy
+		assertNotNull(shpResViews[0].getId());
+		assertEquals(Result.COMPLETE, shpResViews[0].getResult());
+
+		// verify the entire result of the second buy (i.e., the partial one)
+		assertNotNull(shpResViews[1].getId());
+		assertEquals(Result.PARTIAL, shpResViews[1].getResult());
+		assertEquals(1, shpResViews[1].getDroppedItems().size());
+		assertEquals(1, shpResViews[1].getPurchasedItems().size());
+		final int expectedTotalPrice = 20000; // sum(qty*price) of purchased
+												// items
+		assertEquals(expectedTotalPrice, shpResViews[1].getTotalPrice());
+    	
+    }
+    
+    
+    
+    
     
     
     
