@@ -1,5 +1,9 @@
 package org.komparator.supplier.ws.cli;
 
+import javax.jws.HandlerChain;
+
+@HandlerChain(file = "hello_handler-chain-binding.xml")
+
 /** Main class that starts the Supplier Web Service client. */
 public class SupplierClientApp {
 
