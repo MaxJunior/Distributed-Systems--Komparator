@@ -282,7 +282,7 @@ public class MediatorPortImpl implements MediatorPortType{
 	}
 	
 	@Override
-	public ShoppingResultView buyCart(String cartId, String creditCardNr)
+	public synchronized ShoppingResultView buyCart(String cartId, String creditCardNr)
 			throws EmptyCart_Exception, InvalidCartId_Exception, InvalidCreditCard_Exception {
 		
 		CartView cartV=null;
