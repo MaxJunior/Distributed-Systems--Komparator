@@ -117,13 +117,9 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 				Date currentDate = dateFormatter.parse( dateFormatter.format(new Date()) );
 				int numSeconds = 3;
 				
-				Calendar calendar1 = Calendar.getInstance();
-				calendar1.setTime(currentDate);  
 				
-				Calendar calendar2 = Calendar.getInstance();
-				calendar2.setTime(sendedDate); 
-								
-				if(calendar1.get(Calendar.SECOND) - calendar2.get(Calendar.SECOND) > numSeconds){
+				if(sendedDate.getTime() < currentDate.getTime()-(numSeconds*1000)){
+					System.out.println("mais de 3 segundos......");
 					throw new SOAPFaultException(null);
 				}
 				
