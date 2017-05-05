@@ -38,6 +38,7 @@ public class MediatorClientApp {
 
         System.out.println("Invoke ping()...");
         String result = client.ping("client");
+        client.buyCart(null, "4556648855991861");
         System.out.println(result);
 
     }

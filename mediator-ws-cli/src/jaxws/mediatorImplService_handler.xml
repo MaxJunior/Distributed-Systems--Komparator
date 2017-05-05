@@ -1,0 +1,16 @@
+<handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+	<handler-chain>
+		<handler>
+			<handler-class>mediator.ws.handler.LoggingHandler</handler-class>
+		</handler>
+		<handler>
+			<handler-class>mediator.ws.handler.HeaderHandler</handler-class>
+		</handler>
+		<handler>
+			<handler-class>mediator.ws.handler.MessageContextHandler</handler-class>
+		</handler>
+		<handler>
+			<handler-class>mediator.ws.handler.LoggingHandler</handler-class>
+		</handler>
+	</handler-chain>
+</handler-chains>   

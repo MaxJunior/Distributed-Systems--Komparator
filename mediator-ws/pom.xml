@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- http://maven.apache.org/pom.html#Quick_Overview -->
 
-    <groupId>org.komparator.A74</groupId>
+    <groupId>org.komparator.A74</groupId> 
     <artifactId>mediator-ws</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -48,6 +48,12 @@
        		 <groupId>org.komparator.A74</groupId>
 		     <artifactId>cc-ws-cli</artifactId>
 		     <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- WS-HANDLERS -->
+        <dependency>
+            <groupId>example</groupId>
+		    <artifactId>ws-handlers</artifactId>
+		    <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

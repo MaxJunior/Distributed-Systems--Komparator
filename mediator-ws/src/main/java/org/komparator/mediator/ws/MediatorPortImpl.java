@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebService;
 
 import org.komparator.supplier.ws.BadProductId_Exception;
@@ -21,7 +22,7 @@ import org.komparator.supplier.ws.cli.SupplierClientException;
 import pt.ulisboa.tecnico.sdis.ws.cli.CreditCardClient;
 import pt.ulisboa.tecnico.sdis.ws.cli.CreditCardClientException;
 import pt.ulisboa.tecnico.sdis.ws.uddi.UDDINamingException;
-
+@HandlerChain(file = "/mediator-ws_handler-chain.xml")
 @WebService(
 		endpointInterface = "org.komparator.mediator.ws.MediatorPortType", 
 		wsdlLocation = "mediator.1_0.wsdl", 
