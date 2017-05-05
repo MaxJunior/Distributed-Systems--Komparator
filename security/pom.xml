@@ -6,7 +6,7 @@
 	<!-- Please replace 'CXX' below with 
         your C (campus) with A (Alameda) / T (Tagus); and 
         your group number with two digits.
-        Then delete this comment.alterei o doc como acima assinalado. -->
+        Then delete this comment. -->
     <groupId>org.komparator.A74</groupId>
     <artifactId>security</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -21,6 +21,12 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <!--  ca-ws  -->
+        <dependency>
+            <groupId>org.komparator.A74</groupId>
+		    <artifactId>ca-ws-cli</artifactId>
+		    <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
