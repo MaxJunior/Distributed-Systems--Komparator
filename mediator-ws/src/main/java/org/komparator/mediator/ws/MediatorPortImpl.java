@@ -43,6 +43,8 @@ public class MediatorPortImpl implements MediatorPortType{
 	private List<CartView> listCartView = new ArrayList<CartView>();
 	
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+	
+	private List<ShoppingResultView> listShoppingHistory = new ArrayList<ShoppingResultView>();
 
 	public MediatorPortImpl(MediatorEndpointManager endpointManager) {
 		this.endpointManager = endpointManager;
@@ -372,7 +374,7 @@ public class MediatorPortImpl implements MediatorPortType{
 		}
 		
 		
-		
+		listShoppingHistory.add(shoppingRV);
 		return shoppingRV;
 	}
 
@@ -520,8 +522,9 @@ public class MediatorPortImpl implements MediatorPortType{
 
 	@Override
 	public List<ShoppingResultView> shopHistory() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ShoppingResultView> result = listShoppingHistory.subList(0,listShoppingHistory.size());
+		Collections.reverse(result);
+		return result;
 	}
 
 
