@@ -168,5 +168,11 @@ public class MediatorClient implements MediatorPortType {
 	 public List<ShoppingResultView> shopHistory() {
 		 return port.shopHistory();
 	 }
+
+	@Override
+	public void imAlive() {
+		port.imAlive();
+		
+	}
  
 }

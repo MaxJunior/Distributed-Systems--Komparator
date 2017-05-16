@@ -13,9 +13,10 @@ public class MediatorEndpointManager {
 	private String uddiURL = null;
 	/** Web Service name */
 	private String wsName = null;
-//	private boolean isPrimary = false;
+	private boolean isPrimary = false;
 	private String  PRIMARY_PORT = "8071";
 	/** Get Web Service UDDI publication name */
+	private long timeStamp ;
 	public String getWsName() {
 		return wsName;
 	}
@@ -53,7 +54,13 @@ public class MediatorEndpointManager {
 	public void setVerbose(boolean verbose) {
 		this.verbose = verbose;
 	}
-
+    
+	public void setTimeStamp(long time){
+		this.timeStamp = time ;
+	}
+	public long setTimeStamp(){
+		return this.timeStamp;
+	}
 	/** constructor with provided UDDI location, WS name, and WS URL */
 	public MediatorEndpointManager(String uddiURL, String wsName, String wsURL) {
 		this.uddiURL = uddiURL;
@@ -70,6 +77,9 @@ public class MediatorEndpointManager {
 
 	/* end point management */
 
+	public String getWsURL(){
+		return this.wsURL;
+	}
 	public void start() throws Exception {
 		try {
 			// publish end point

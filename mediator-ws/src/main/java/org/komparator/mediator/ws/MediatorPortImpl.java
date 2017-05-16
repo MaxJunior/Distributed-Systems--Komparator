@@ -2,10 +2,13 @@ package org.komparator.mediator.ws;
 
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.jws.HandlerChain;
@@ -22,10 +25,10 @@ import org.komparator.supplier.ws.cli.SupplierClientException;
 import pt.ulisboa.tecnico.sdis.ws.cli.CreditCardClient;
 import pt.ulisboa.tecnico.sdis.ws.cli.CreditCardClientException;
 import pt.ulisboa.tecnico.sdis.ws.uddi.UDDINamingException;
-@HandlerChain(file = "/mediator-ws_handler-chain.xml")
+//@HandlerChain(file = "/mediator-ws_handler-chain.xml")
 @WebService(
 		endpointInterface = "org.komparator.mediator.ws.MediatorPortType", 
-		wsdlLocation = "mediator.1_0.wsdl", 
+		wsdlLocation = "mediator.2_0.wsdl", 
 		name = "MediatorWebService", 
 		portName = "MediatorPort", 
 		targetNamespace = "http://ws.mediator.komparator.org/", 
@@ -38,6 +41,8 @@ public class MediatorPortImpl implements MediatorPortType{
 	private MediatorEndpointManager endpointManager;
 	private final String SUPPLIER_SERVER_NAME = "A74_Supplier";
 	private List<CartView> listCartView = new ArrayList<CartView>();
+	
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 	public MediatorPortImpl(MediatorEndpointManager endpointManager) {
 		this.endpointManager = endpointManager;
@@ -517,6 +522,28 @@ public class MediatorPortImpl implements MediatorPortType{
 	public List<ShoppingResultView> shopHistory() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void imAlive()  {
+		
+		if (endpointManager.getWsURL().contains("8072")) {
+			System.out.println("Primary Mediator is alive !!!");
+			try {
+				Date currentDate = dateFormatter.parse( dateFormatter.format(new Date()) );
+				endpointManager.setTimeStamp(currentDate.getTime());
+				System.out.println("time :: :" + currentDate.getTime() );
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	 }else{
+		 return ;
+	 }
+		
+		
 	}
 
 	

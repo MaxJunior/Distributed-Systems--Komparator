@@ -11,7 +11,7 @@ import org.komparator.supplier.domain.Purchase;
 import org.komparator.supplier.domain.QuantityException;
 import org.komparator.supplier.domain.Supplier;
 
-@HandlerChain(file = "/supplier-ws_handler-chain.xml")
+//@HandlerChain(file = "/supplier-ws_handler-chain.xml")
 @WebService(
 		endpointInterface = "org.komparator.supplier.ws.SupplierPortType", 
 		wsdlLocation = "supplier.1_0.wsdl", 

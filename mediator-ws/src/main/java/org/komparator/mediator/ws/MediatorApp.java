@@ -1,5 +1,9 @@
 package org.komparator.mediator.ws;
 
+import java.util.Timer;
+
+import org.komparator.mediator.ws.cli.MediatorClient;
+
 public class MediatorApp {
 
 	public static void main(String[] args) throws Exception {
@@ -12,6 +16,7 @@ public class MediatorApp {
 		String uddiURL = null;
 		String wsName = null;
 		String wsURL = null;
+	    int numOfSeconds = 5 ;
 
 		// Create server implementation object, according to options
 		MediatorEndpointManager endpoint = null;
@@ -28,11 +33,17 @@ public class MediatorApp {
 
 		try {
 			endpoint.start();
+			if(wsURL.contains("8071")){
+				LifeProof proofLife = new LifeProof(wsURL);			
+				Timer timer = new Timer(/*isDaemon*/ true);
+				timer.schedule(proofLife, /*delay*/ 0 * 1000, /*period*/ numOfSeconds * 1000);
+			}
 			endpoint.awaitConnections();
 		} finally {
 			endpoint.stop();
 		}
-
+        
 	}
+	
 
 }

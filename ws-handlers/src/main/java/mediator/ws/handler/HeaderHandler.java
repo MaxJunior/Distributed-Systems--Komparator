@@ -120,7 +120,7 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 				
 				if(sendedDate.getTime() < currentDate.getTime()-(numSeconds*1000)){
 					System.out.println("mais de 3 segundos......");
-					throw new SOAPFaultException(null);
+					throw new RuntimeException("not fresh");
 				}
 				
 				String dateStrformat = dateFormatter.format(new Date());
