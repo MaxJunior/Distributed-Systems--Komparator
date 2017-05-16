@@ -13,7 +13,8 @@ public class MediatorEndpointManager {
 	private String uddiURL = null;
 	/** Web Service name */
 	private String wsName = null;
-
+//	private boolean isPrimary = false;
+	private String  PRIMARY_PORT = "8071";
 	/** Get Web Service UDDI publication name */
 	public String getWsName() {
 		return wsName;
@@ -75,7 +76,14 @@ public class MediatorEndpointManager {
 // TODO uncomment after port implementation is done
 			endpoint = Endpoint.create(this.portImpl);
 			if (verbose) {
-				System.out.printf("Starting %s%n", wsURL);
+				System.out.printf("Starting %s%n", wsURL);				
+		
+			}
+			
+			if (wsURL.contains(PRIMARY_PORT)){
+				System.out.println("Primary Mediator-WS : " + wsURL);
+			}else { 
+				System.out.println("Secondary Mediator-WS : " + wsURL);
 			}
 			endpoint.publish(wsURL);
 		} catch (Exception e) {
@@ -86,7 +94,9 @@ public class MediatorEndpointManager {
 			}
 			throw e;
 		}
-		publishToUDDI();
+		if (wsURL.contains(PRIMARY_PORT)){
+		    publishToUDDI();
+		}
 	}
 
 	public void awaitConnections() {

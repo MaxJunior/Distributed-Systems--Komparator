@@ -19,11 +19,20 @@
 
         <mainclass>org.komparator.mediator.ws.MediatorApp</mainclass>
 
-        <uddi.url>http://localhost:9090</uddi.url>
+    <!--    <uddi.url>http://localhost:9090</uddi.url>
         <ws.name>A74_Mediator</ws.name>
         <ws.url>http://localhost:8080/mediator-ws/endpoint</ws.url>
+       --> 
+      <uddi.url>http://localhost:9090</uddi.url>
+      <group.id>A74</group.id>
+	    <ws.i>1</ws.i>
+	    <ws.host>localhost</ws.host>
+	    <ws.port>807${ws.i}</ws.port>
+	    <ws.url>http://${ws.host}:${ws.port}/mediator-ws/endpoint</ws.url>
+	    <ws.name>${group.id}_Mediator</ws.name>
+	    <supplier.ws.name>${group.id}_Supplier</supplier.ws.name>    
+       
     </properties>
-
     <dependencies>
     	<!-- JAX-WS -->
         <dependency>
