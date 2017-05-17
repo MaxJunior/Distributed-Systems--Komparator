@@ -52,7 +52,7 @@ public class MediatorClient implements MediatorPortType {
 
     public String getWsURL() {
         return wsURL;
-    }
+    } 
 
     /** output option **/
     private boolean verbose = false;
@@ -174,5 +174,16 @@ public class MediatorClient implements MediatorPortType {
 		port.imAlive();
 		
 	}
+
+	@Override
+	public void updateShopHistory(List<ShoppingResultView> resultView) {
+		port.updateShopHistory(resultView);
+		
+	}
  
+	@Override
+	public void updateCart(List<CartView> currentCartView) {
+		port.updateCart(currentCartView);
+		
+	}
 }

@@ -549,6 +549,23 @@ public class MediatorPortImpl implements MediatorPortType{
 		
 	}
 
+
+	@Override
+	public void updateShopHistory(List<ShoppingResultView> resultView) {
+		System.out.println("Shopping History View :" + resultView.toString());
+		listShoppingHistory = resultView;
+		
+	}
+
+
+	@Override
+	public void updateCart(List<CartView> currentCartView) {
+		System.out.println("Cart Views :" + currentCartView.toString());
+		listCartView = currentCartView;
+	
+		
+	}
+
 	
 
 

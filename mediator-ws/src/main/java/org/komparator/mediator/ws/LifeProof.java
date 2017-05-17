@@ -1,5 +1,7 @@
 package org.komparator.mediator.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
 
 import org.komparator.mediator.ws.cli.MediatorClient;
@@ -8,6 +10,7 @@ import org.komparator.mediator.ws.cli.MediatorClientException;
 public class LifeProof extends TimerTask {
 	
 	String  wsURL  = null ;
+ 
 	public LifeProof(String wsURL){
 		this.wsURL = wsURL ;
 	}
@@ -21,7 +24,7 @@ public class LifeProof extends TimerTask {
 			try {
 				mediatorClient = new MediatorClient("http://localhost:8072/mediator-ws/endpoint");
 			} catch (MediatorClientException e1) {
-				// TODO Auto-generated catch block
+				
 				e1.printStackTrace();
 			}
 	//		System.out.println("pRIMAR2");
@@ -29,6 +32,7 @@ public class LifeProof extends TimerTask {
 			try {
 				mediatorClient.imAlive();
 	//			System.out.println("pRIMAR3");
+				
 			}catch(Exception e){System.out.println("Error : " + e);  }
 			
 		

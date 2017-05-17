@@ -60,8 +60,8 @@ wsdl:service, wsdl:portType, wsdl:types and wsdl:binding below
             <xs:element name="pingResponse" type="tns:pingResponse"/>
        
             <xs:element name="imAlive" type="tns:imAlive"/>
-           
-
+			<xs:element name="updateShopHistory" type="tns:updateShopHistory"/>
+			<xs:element name="updateCart" type="tns:updateCart"/>
             <xs:element name="searchItems" type="tns:searchItems"/>
 
             <xs:element name="searchItemsResponse" type="tns:searchItemsResponse"/>
@@ -142,7 +142,16 @@ wsdl:service, wsdl:portType, wsdl:types and wsdl:binding below
             <xs:complexType name="imAlive">
                 <xs:sequence/>
             </xs:complexType>
-
+			<xs:complexType name="updateShopHistory">
+                <xs:sequence>
+                 <xs:element name="resultView" type="tns:shoppingResultView" nillable="true" minOccurs="0"  maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="updateCart">
+                <xs:sequence>
+                 <xs:element name="currentCartView" type="tns:cartView" nillable="true" minOccurs="0"  maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
             <!-- LAST ADDITIONS ENDS -->
 
             <xs:complexType name="buyCart">
@@ -167,7 +176,7 @@ wsdl:service, wsdl:portType, wsdl:types and wsdl:binding below
                     <xs:element name="totalPrice" type="xs:int"/>
                 </xs:sequence>
             </xs:complexType>
-
+			
             <xs:complexType name="InvalidCartId">
                 <xs:sequence>
                     <xs:element name="message" type="xs:string" minOccurs="0"/>
@@ -324,6 +333,12 @@ wsdl:service, wsdl:portType, wsdl:types and wsdl:binding below
     <message name="imAlive">
          <part name="parameters" element="tns:imAlive"/>
     </message>
+    <message name="updateShopHistory">
+         <part name="parameters" element="tns:updateShopHistory"/>
+    </message>
+     <message name="updateCart">
+         <part name="parameters" element="tns:updateCart"/>
+    </message>
 
  <!-- LAST ADDITIONS ENDS -->
     <message name="shopHistory">
@@ -376,7 +391,12 @@ wsdl:service, wsdl:portType, wsdl:types and wsdl:binding below
         <operation name="imAlive">
             <input wsam:Action="http://ws.mediator.komparator.org/Mediator/imAlive" message="tns:imAlive"/>
         </operation>
-
+		<operation name="updateShopHistory">
+            <input wsam:Action="http://ws.mediator.komparator.org/Mediator/updateShopHistory" message="tns:updateShopHistory"/>
+        </operation>
+        <operation name="updateCart">
+            <input wsam:Action="http://ws.mediator.komparator.org/Mediator/updateCart" message="tns:updateCart"/>
+        </operation>
         <!-- LAST ADDITIONS ENDS -->
 
         <operation name="shopHistory">
@@ -485,6 +505,19 @@ wsdl:service, wsdl:portType, wsdl:types and wsdl:binding below
                  <soap:body use="literal"/>
             </input>
         </operation>
+        <operation name="updateShopHistory">
+            <soap:operation soapAction=""/>
+            <input>
+                 <soap:body use="literal"/>
+            </input>
+        </operation>
+        <operation name="updateCart">
+            <soap:operation soapAction=""/>
+            <input>
+                 <soap:body use="literal"/>
+            </input>
+        </operation>
+        
         <!-- LAST ADDITIONS ENDS -->
         <operation name="shopHistory">
             <soap:operation soapAction=""/>
