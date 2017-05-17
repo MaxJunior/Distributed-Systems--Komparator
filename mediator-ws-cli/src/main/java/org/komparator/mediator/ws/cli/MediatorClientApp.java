@@ -1,5 +1,6 @@
 package org.komparator.mediator.ws.cli;
 
+import org.komparator.mediator.ws.CartView;
 
 public class MediatorClientApp {
 
@@ -38,7 +39,9 @@ public class MediatorClientApp {
 
         System.out.println("Invoke ping()...");
         String result = client.ping("client");
-        client.buyCart(null, "4556648855991861");
+      
+     //   client.addToCart("carrinho1", itemId, 12);
+   //     client.buyCart(null, "4556648855991861");
         System.out.println(result);
 
     }

@@ -21,7 +21,7 @@ public class GetItemsIT extends BaseIT {
 	// static members
 
 	// one-time initialization and clean-up
-	@BeforeClass
+		@BeforeClass
 	public static void oneTimeSetUp() throws BadProductId_Exception, BadProduct_Exception {
 		
 		

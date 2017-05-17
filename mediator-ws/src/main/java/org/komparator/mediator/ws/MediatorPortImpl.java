@@ -10,10 +10,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
 
+import org.komparator.mediator.ws.cli.MediatorClient;
+import org.komparator.mediator.ws.cli.MediatorClientException;
 import org.komparator.supplier.ws.BadProductId_Exception;
 import org.komparator.supplier.ws.BadQuantity_Exception;
 import org.komparator.supplier.ws.BadText_Exception;
@@ -375,6 +378,23 @@ public class MediatorPortImpl implements MediatorPortType{
 		
 		
 		listShoppingHistory.add(shoppingRV);
+		if(endpointManager.getWsURL().contains("8071")){
+			
+			MediatorClient mediatorClient  = null;
+			try {
+				mediatorClient = new MediatorClient("http://localhost:8072/mediator-ws/endpoint");
+
+			} catch (MediatorClientException e1) {				
+				e1.printStackTrace();
+			}
+			
+			try {
+				System.out.println("Communicating with Mediator 2");
+				
+				mediatorClient.updateShopHistory(listShoppingHistory);
+			}catch(Exception e){System.out.println("Error : " + e);  }
+			
+		}
 		return shoppingRV;
 	}
 
@@ -515,7 +535,25 @@ public class MediatorPortImpl implements MediatorPortType{
 				
 				}
 			}
-		} 
+		}
+		
+		if(endpointManager.getWsURL().contains("8071")){
+			
+			MediatorClient mediatorClient  = null;
+			try {
+				mediatorClient = new MediatorClient("http://localhost:8072/mediator-ws/endpoint");
+
+			} catch (MediatorClientException e1) {				
+				e1.printStackTrace();
+			}
+			
+			try {
+				System.out.println("Communicating with Mediator 2");
+				
+				mediatorClient.updateCart(listCartView);
+			}catch(Exception e){System.out.println("Error : " + e);  }
+			
+		}
 		
 	}
 
@@ -560,6 +598,7 @@ public class MediatorPortImpl implements MediatorPortType{
 
 	@Override
 	public void updateCart(List<CartView> currentCartView) {
+
 		System.out.println("Cart Views :" + currentCartView.toString());
 		listCartView = currentCartView;
 	

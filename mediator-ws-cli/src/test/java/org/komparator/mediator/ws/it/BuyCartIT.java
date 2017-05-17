@@ -31,7 +31,7 @@ public class BuyCartIT extends BaseIT{
 	static CartView cart;
 	ItemIdView idViewTest;
 	
-	
+		
 	@BeforeClass
 	public static void oneTimeSetUp() throws BadProductId_Exception, BadProduct_Exception {
 		   
@@ -40,7 +40,7 @@ public class BuyCartIT extends BaseIT{
 	
 	
 	
-
+	
 	@AfterClass
 	public static void oneTimeTearDown() {
 		// clear remote service state after all tests
@@ -259,7 +259,6 @@ public class BuyCartIT extends BaseIT{
 	}
 
 
-	
 	
 
 }

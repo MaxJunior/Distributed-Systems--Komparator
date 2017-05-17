@@ -10,7 +10,7 @@ public class ClearIT  extends BaseIT{
     // assertEquals(expected, actual);
 
     // public String ping(String x)
-
+	
    @Test
     public void pingEmptyTest() {
         mediatorClient.clear();

@@ -15,7 +15,7 @@ public class PingIT extends BaseIT {
 
     // public String ping(String x)
 
-    @Test
+	  @Test
     public void pingEmptyTest() {
         assertNotNull(mediatorClient.ping("test"));
     }
