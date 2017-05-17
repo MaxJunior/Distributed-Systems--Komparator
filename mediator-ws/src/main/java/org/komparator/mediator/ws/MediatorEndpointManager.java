@@ -16,7 +16,8 @@ public class MediatorEndpointManager {
 	private boolean isPrimary = false;
 	private String  PRIMARY_PORT = "8071";
 	/** Get Web Service UDDI publication name */
-	private long timeStamp ;
+	private long timeStamp = 0;
+	private boolean itsAlive = true;
 	public String getWsName() {
 		return wsName;
 	}
@@ -58,14 +59,25 @@ public class MediatorEndpointManager {
 	public void setTimeStamp(long time){
 		this.timeStamp = time ;
 	}
-	public long setTimeStamp(){
+	public long getTimeStamp(){
 		return this.timeStamp;
 	}
+	
+	
+	public void setItsAlive(boolean b){
+		this.itsAlive = b ;
+	}
+	public boolean getItsAlive(){
+		return this.itsAlive;
+	}
+	
+	
 	/** constructor with provided UDDI location, WS name, and WS URL */
 	public MediatorEndpointManager(String uddiURL, String wsName, String wsURL) {
 		this.uddiURL = uddiURL;
 		this.wsName = wsName;
 		this.wsURL = wsURL;
+		this.isPrimary = true;
 	}
 
 	/** constructor with provided web service URL */
@@ -74,7 +86,8 @@ public class MediatorEndpointManager {
 			throw new NullPointerException("Web Service URL cannot be null!");
 		this.wsURL = wsURL;
 	}
-
+	
+	
 	/* end point management */
 
 	public String getWsURL(){
@@ -180,8 +193,43 @@ public class MediatorEndpointManager {
 		}
 	}
 	
+	
+	
+	void publishSecondaryServerToUDDI(String name_ws ,String url_uddi) throws Exception {
+		uddiURL = url_uddi;
+		wsName = name_ws;
+		
+		try {
+			// publish to UDDI
+			if (uddiURL != null) {
+				if (verbose) {
+					System.out.printf("Publishing '%s' to UDDI at %s%n", wsName, uddiURL);
+				}
+				uddiNaming = new UDDINaming(uddiURL);
+				uddiNaming.rebind(wsName, wsURL);
+				
+			}
+		} catch (Exception e) {
+			uddiNaming = null;
+			if (verbose) {
+				System.out.printf("Caught exception when binding to UDDI: %s%n", e);
+			}
+			throw e;
+		}
+	}
+	
+	
+	
 	public String getUddiURL(){
 		return this.uddiURL;
+	}
+
+	public boolean isPrimary() {
+		return isPrimary;
+	}
+
+	public void setPrimary(boolean isPrimary) {
+		this.isPrimary = isPrimary;
 	}
 	
 

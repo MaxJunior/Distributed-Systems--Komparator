@@ -37,34 +37,18 @@ public class MediatorApp {
 		try {
 			endpoint.start();
 			
-			if(wsURL.contains("8071")){
+			if(wsURL.contains("8071")){  //primario:
 				
-				/*			MediatorClient mediatorClient  = null;
-				try {
-					mediatorClient = new MediatorClient("http://localhost:8072/mediator-ws/endpoint");
-					//System.out.println("Already Create the Mediator");
-				} catch (MediatorClientException e1) {
-					
-					e1.printStackTrace();
-				}
-		//		System.out.println("pRIMAR2");
+				LifeProof proofLife = new LifeProof();			
+				Timer timer = new Timer(true);
+				timer.schedule(proofLife, 0 * 1000, numOfSeconds * 1000);
+			
+			}else{  //secudario:
 				
-				try {
-					System.out.println("Already Create the Mediator");
-				//	mediatorClient.imAlive();
-		//			System.out.println("pRIMAR3");
-					ShoppingResultView listV1 = new ShoppingResultView();
-					ShoppingResultView listV2 = new ShoppingResultView();
-				    List<ShoppingResultView> listShoppingHistory = new ArrayList<ShoppingResultView>();
-				    listShoppingHistory.add(listV1);
-				    listShoppingHistory.add(listV2);
-					mediatorClient.updateShopHistory(listShoppingHistory);
-				}catch(Exception e){System.out.println("Error : " + e);  }
+				Timer timer = new Timer(true);
+				LifeProofReceiver proofLifeReceiver = new LifeProofReceiver(endpoint, timer);
+				timer.schedule(proofLifeReceiver, numOfSeconds*1000*2 , numOfSeconds*1000*2); 
 				
-				*/
-				LifeProof proofLife = new LifeProof(wsURL);			
-				Timer timer = new Timer(/*isDaemon*/ true);
-				timer.schedule(proofLife, /*delay*/ 0 * 1000, /*period*/ numOfSeconds * 1000);
 			}
 			endpoint.awaitConnections();
 		} finally {

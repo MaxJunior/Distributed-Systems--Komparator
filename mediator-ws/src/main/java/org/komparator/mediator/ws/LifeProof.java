@@ -8,11 +8,9 @@ import org.komparator.mediator.ws.cli.MediatorClient;
 import org.komparator.mediator.ws.cli.MediatorClientException;
 
 public class LifeProof extends TimerTask {
-	
-	String  wsURL  = null ;
  
-	public LifeProof(String wsURL){
-		this.wsURL = wsURL ;
+	public LifeProof(){
+		
 	}
 
 	@Override

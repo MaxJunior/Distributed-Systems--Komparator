@@ -378,7 +378,7 @@ public class MediatorPortImpl implements MediatorPortType{
 		
 		
 		listShoppingHistory.add(shoppingRV);
-		if(endpointManager.getWsURL().contains("8071")){
+		if(endpointManager.getWsURL().contains("8071")  && endpointManager.isPrimary()){
 			
 			MediatorClient mediatorClient  = null;
 			try {
@@ -537,7 +537,7 @@ public class MediatorPortImpl implements MediatorPortType{
 			}
 		}
 		
-		if(endpointManager.getWsURL().contains("8071")){
+		if(endpointManager.getWsURL().contains("8071") && endpointManager.isPrimary()){
 			
 			MediatorClient mediatorClient  = null;
 			try {
@@ -579,6 +579,8 @@ public class MediatorPortImpl implements MediatorPortType{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			endpointManager.setItsAlive(true);
 			
 	 }else{
 		 return ;
