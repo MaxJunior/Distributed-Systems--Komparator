@@ -28,6 +28,8 @@ public class LifeProof extends TimerTask {
 	//		System.out.println("pRIMAR2");
 			
 			try {
+				System.out.println("");
+				System.out.println("sending imAlive to secondary mediator...");
 				mediatorClient.imAlive();
 	//			System.out.println("pRIMAR3");
 				

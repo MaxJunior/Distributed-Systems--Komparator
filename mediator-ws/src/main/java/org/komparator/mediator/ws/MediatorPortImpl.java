@@ -45,6 +45,8 @@ public class MediatorPortImpl implements MediatorPortType{
 	private final String SUPPLIER_SERVER_NAME = "A74_Supplier";
 	private List<CartView> listCartView = new ArrayList<CartView>();
 	
+	private int incrementoCompra=1;
+	
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	
 	private List<ShoppingResultView> listShoppingHistory = new ArrayList<ShoppingResultView>();
@@ -299,7 +301,8 @@ public class MediatorPortImpl implements MediatorPortType{
 		boolean cartExists = false;
 		CreditCardClient creditCardCli=null;
 		ShoppingResultView shoppingRV = new ShoppingResultView();
-		shoppingRV.setId("id1");
+		shoppingRV.setId("id" + incrementoCompra);
+		incrementoCompra++;
 		shoppingRV.setResult(Result.COMPLETE);
 		
 		try {
@@ -389,7 +392,8 @@ public class MediatorPortImpl implements MediatorPortType{
 			}
 			
 			try {
-				System.out.println("Communicating with Mediator 2");
+				System.out.println("");
+				System.out.println("Sending information of History to secondary mediator....");
 				
 				mediatorClient.updateShopHistory(listShoppingHistory);
 			}catch(Exception e){System.out.println("Error : " + e);  }
@@ -548,7 +552,8 @@ public class MediatorPortImpl implements MediatorPortType{
 			}
 			
 			try {
-				System.out.println("Communicating with Mediator 2");
+				System.out.println("");
+				System.out.println("Sending information of carts to secondary mediator....");
 				
 				mediatorClient.updateCart(listCartView);
 			}catch(Exception e){System.out.println("Error : " + e);  }
@@ -592,16 +597,27 @@ public class MediatorPortImpl implements MediatorPortType{
 
 	@Override
 	public void updateShopHistory(List<ShoppingResultView> resultView) {
-		System.out.println("Shopping History View :" + resultView.toString());
 		listShoppingHistory = resultView;
+		System.out.println("");
+		System.out.print("Received Shopping History View : : [");
+		for (ShoppingResultView srv : this.shopHistory()){
+			
+			System.out.print(" " + srv.getId() + " ,");
+		}
+		System.out.println(" ]");
 		
 	}
 
 
 	@Override
 	public void updateCart(List<CartView> currentCartView) {
-
-		System.out.println("Cart Views :" + currentCartView.toString());
+		System.out.println("");
+		System.out.print("Received Cart Views : : [");
+		for (CartView cv : currentCartView){
+			
+			System.out.print(" " + cv.getCartId() + " ,");
+		}
+		System.out.println(" ]");
 		listCartView = currentCartView;
 	
 		

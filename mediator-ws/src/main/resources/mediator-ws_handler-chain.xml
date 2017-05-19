@@ -2,7 +2,7 @@
 
 <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
     <handler-chain>
-	<handler>
+	<!--  <handler>
             <handler-class>mediatorserver.ws.handler.LoggingHandler</handler-class>
         </handler>
         <handler>
@@ -13,6 +13,6 @@
         </handler>
         <handler>
             <handler-class>mediatorserver.ws.handler.LoggingHandler</handler-class>
-        </handler>
+        </handler> -->
     </handler-chain>
 </handler-chains>
